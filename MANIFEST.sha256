@@ -1,0 +1,4 @@
+# SHA-256 checksums of the frozen Inside Airbnb snapshots in data/raw/.
+# PENDING: no entries yet. The frozen snapshot files were not available when this file was
+# created. Download them into data/raw/build/ and data/raw/test/, run 'make manifest',
+# review the output, and commit it. 'make verify' fails until real entries exist.
