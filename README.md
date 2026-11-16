@@ -5,10 +5,7 @@ DS5110 Final Project, Track 4: Reviews. This repository is being prepared for
 
 ## Research question
 
-<!-- TODO(team): paste the existing 100–150-word research question here, unchanged.
-     It was not in this file when the repository was set up. -->
-
-_To be added._
+Can Airbnb guest reviews help us identify which listings in Boston have low ratings, even when most listings have high ratings? Our project will look at Airbnb listings in Boston using data from two different times in 2026, including September 19, 2026. We want to see whether the words guests use in their reviews can help us tell the difference between highly rated and lower-rated listings. We will use reviews.csv.gz to see what guests wrote and listings.csv.gz to find each listing's overall rating. Our goal is to build a model that uses these reviews to predict whether a listing has a low rating. One limitation is that not every guest leaves a review, so the comments may not reflect everyone's experience. We will focus on listings that have both reviews and ratings available.
 
 ## Team
 

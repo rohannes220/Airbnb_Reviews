@@ -4,8 +4,10 @@
 
 [Inside Airbnb](https://insideairbnb.com/get-the-data/) and web scraping.
 
+City: Boston, Massachusetts.
+
 <!-- TODO(team): confirm whether "web scraping" means Inside Airbnb's own scraping of public
-     Airbnb pages or additional scraping by this team, and name the city/region. -->
+     Airbnb pages or additional scraping by this team. -->
 
 ## Snapshots
 
