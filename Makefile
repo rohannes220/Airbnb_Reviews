@@ -1,20 +1,20 @@
 # DS5110 Final Project, Track 4: Reviews
 #
 # Data targets:
-#   make data       download the course-assigned frozen snapshots into data/raw/ and verify SHA-256
+#   make data       download both Boston snapshots into data/raw/ and verify SHA-256
 #   make fetch      download only (primary URL first, then the GitHub release asset fallback)
 #   make verify     check every file in data/raw/ against MANIFEST.sha256
 #   make manifest   (re)write MANIFEST.sha256 from the files currently in data/raw/
 #   make counts     print actual row counts for the downloaded files
 #
-# Snapshot sources are NOT hard-coded: they must be the exact frozen snapshots from the course
-# files. Set them on the command line or in an untracked local file, data/sources.mk, e.g.:
-#   BUILD_BASE_URL = <course-provided URL of the folder holding the build snapshot files>
-#   TEST_BASE_URL  = <course-provided URL of the folder holding the 2026-09-19 test snapshot files>
-# Each base URL must serve listings.csv.gz, reviews.csv.gz, calendar.csv.gz and
-# neighbourhoods.geojson directly underneath it.
+# Snapshots (Inside Airbnb, Boston):
+#   build = 2026-06-15  (develop the analysis)
+#   test  = 2026-09-19  (check whether the finding still holds)
+# Files are downloaded from the Inside Airbnb portal: <BASE_URL>/data/<file> for the CSV files
+# and <BASE_URL>/visualisations/neighbourhoods.geojson. The base URLs can be overridden on the
+# command line or in data/sources.mk.
 #
-# Fallback: if a primary download fails (or no base URL is set), the file is fetched from the
+# Fallback: if a portal download fails (or no base URL is set), the file is fetched from the
 # GitHub release $(RELEASE_TAG) of $(RELEASE_REPO), where each asset is named
 # <snapshot>-<file>, e.g. build-listings.csv.gz or test-reviews.csv.gz.
 
@@ -27,8 +27,11 @@ MANIFEST := MANIFEST.sha256
 SNAPSHOTS := build test
 FILES    := listings.csv.gz reviews.csv.gz calendar.csv.gz neighbourhoods.geojson
 
-BUILD_BASE_URL ?=
-TEST_BASE_URL  ?=
+PORTAL_URL     ?= https://data.insideairbnb.com/united-states/ma/boston
+BUILD_DATE     ?= 2026-06-15
+TEST_DATE      ?= 2026-09-19
+BUILD_BASE_URL ?= $(PORTAL_URL)/$(BUILD_DATE)
+TEST_BASE_URL  ?= $(PORTAL_URL)/$(TEST_DATE)
 RELEASE_REPO   ?= rohannes220/Airbnb_Reviews
 RELEASE_TAG    ?= v0.1-proposal
 RELEASE_BASE_URL ?= https://github.com/$(RELEASE_REPO)/releases/download/$(RELEASE_TAG)
@@ -58,10 +61,10 @@ fetch:
 	  for f in $(FILES); do \
 	    dest="$(RAW_DIR)/$$snap/$$f"; \
 	    if [ -s "$$dest" ]; then echo "skip   $$dest (already present)"; continue; fi; \
-	    ok=0; \
+	    ok=0; sub=data; [ "$$f" = neighbourhoods.geojson ] && sub=visualisations; \
 	    if [ -n "$$base" ]; then \
-	      echo "fetch  $$dest <- $$base/$$f"; \
-	      if $(CURL) -o "$$dest.part" "$$base/$$f"; then ok=1; else echo "       primary download failed"; fi; \
+	      echo "fetch  $$dest <- $$base/$$sub/$$f"; \
+	      if $(CURL) -o "$$dest.part" "$$base/$$sub/$$f"; then ok=1; else echo "       portal download failed"; fi; \
 	    else \
 	      echo "fetch  $$dest: no primary URL set for the '$$snap' snapshot"; \
 	    fi; \
@@ -73,8 +76,7 @@ fetch:
 	  done; \
 	done; \
 	if [ $$failed -ne 0 ]; then \
-	  echo "ERROR: some files could not be downloaded. Set BUILD_BASE_URL/TEST_BASE_URL to the course" >&2; \
-	  echo "       snapshot URLs, or upload the files as assets of release $(RELEASE_TAG)." >&2; \
+	  echo "ERROR: some files could not be downloaded from the portal or from release $(RELEASE_TAG)." >&2; \
 	  exit 1; \
 	fi
 
