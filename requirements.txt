@@ -1,0 +1,9 @@
+# Pinned Python dependencies (verified to install together on Python 3.13).
+# Install with: make install   (or: python -m pip install -r requirements.txt)
+pandas==3.1.1
+numpy==2.5.5
+pyarrow==26.0.1
+duckdb==2.0.0
+matplotlib==3.11.2
+jupyterlab==4.6.6
+pytest==9.2.0

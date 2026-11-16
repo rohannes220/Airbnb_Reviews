@@ -1,0 +1,35 @@
+# --- Data (never commit raw or derived data) ---
+# Folder contents are ignored; the .gitkeep files keep the empty folders in git.
+data/raw/*
+!data/raw/.gitkeep
+data/derived/*
+!data/derived/.gitkeep
+# data/README.md and MANIFEST.sha256 are intentionally NOT ignored.
+*.part
+
+# --- Python caches and build output ---
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ipynb_checkpoints/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+build/
+dist/
+*.egg-info/
+
+# --- Virtual environments ---
+.venv/
+venv/
+env/
+.env
+
+# --- OS and editor files ---
+.DS_Store
+Thumbs.db
+desktop.ini
+.idea/
+.vscode/
+*.swp
