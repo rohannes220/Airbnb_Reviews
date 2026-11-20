@@ -11,9 +11,9 @@ Can Airbnb guest reviews help us identify which listings in Boston have low rati
 
 | Role | Name | GitHub |
 | --- | --- | --- |
-| Data lead | Smith | _TBD_ |
-| Model lead | Smith + Rohan | _TBD_ |
-| Delivery lead | Rohan | _TBD_ |
+| Data lead | Rohan | _TBD_ |
+| Model lead | Smith  | _TBD_ |
+| Git lead | Hritvik | _TBD_ |
 
 ### Actual contributions
 
