@@ -42,12 +42,15 @@ RELEASE_BASE_URL ?= https://github.com/$(RELEASE_REPO)/releases/download/$(RELEA
 SHA256 := $(shell command -v sha256sum >/dev/null 2>&1 && echo sha256sum || echo "shasum -a 256")
 CURL   := curl --fail --location --silent --show-error --retry 3 --connect-timeout 20
 
-.PHONY: help install data fetch verify manifest counts clean-data
+.PHONY: help check-python install data fetch verify manifest counts clean-data
 
 help:
 	@sed -n '3,8p' Makefile | sed 's/^# //'
 
-install:
+check-python:
+	@$(PYTHON) -c 'import sys; sys.exit(0 if sys.version_info[:2] == (3, 13) else "ERROR: Python 3.13.x is required; found " + sys.version.split()[0])'
+
+install: check-python
 	$(PYTHON) -m pip install -r requirements.txt
 
 data: fetch verify
@@ -60,7 +63,7 @@ fetch:
 	  mkdir -p "$(RAW_DIR)/$$snap"; \
 	  for f in $(FILES); do \
 	    dest="$(RAW_DIR)/$$snap/$$f"; \
-	    if [ -s "$$dest" ]; then echo "skip   $$dest (already present)"; continue; fi; \
+	    if [ -s "$$dest" ] && grep -F "  $$dest" "$(MANIFEST)" | $(SHA256) -c - >/dev/null 2>&1; then echo "skip   $$dest (checksum verified)"; continue; fi; \
 	    ok=0; sub=data; [ "$$f" = neighbourhoods.geojson ] && sub=visualisations; \
 	    if [ -n "$$base" ]; then \
 	      echo "fetch  $$dest <- $$base/$$sub/$$f"; \
