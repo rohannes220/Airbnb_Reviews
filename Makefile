@@ -63,7 +63,7 @@ fetch:
 	  mkdir -p "$(RAW_DIR)/$$snap"; \
 	  for f in $(FILES); do \
 	    dest="$(RAW_DIR)/$$snap/$$f"; \
-	    if [ -s "$$dest" ]; then echo "skip   $$dest (already present)"; continue; fi; \
+	    if [ -s "$$dest" ] && grep -F "  $$dest" "$(MANIFEST)" | $(SHA256) -c - >/dev/null 2>&1; then echo "skip   $$dest (checksum verified)"; continue; fi; \
 	    ok=0; sub=data; [ "$$f" = neighbourhoods.geojson ] && sub=visualisations; \
 	    if [ -n "$$base" ]; then \
 	      echo "fetch  $$dest <- $$base/$$sub/$$f"; \
