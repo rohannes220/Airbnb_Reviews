@@ -41,11 +41,22 @@ MANIFEST.sha256  SHA-256 checksums of the raw data files
 
 ## Getting started
 
+### Python environment
+
+Python **3.13.x** is the supported and tested version for this project. The pinned dependencies were successfully installed using Python 3.13 on Linux.
+
+Dependency installation failed under Python 3.10. Other Python versions have not been validated.
+
+### Setup
+
 ```bash
-python3 -m venv .venv && source .venv/bin/activate
+python3.13 -m venv .venv
+source .venv/bin/activate
 make install
 make data      # download the frozen snapshots into data/raw/ and verify SHA-256 checksums
 ```
+
+The `make install` target validates the Python version before installing dependencies.
 
 See [data/README.md](data/README.md) (the data card) for the snapshots, files and checksums.
 
